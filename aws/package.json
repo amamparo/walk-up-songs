@@ -1,0 +1,12 @@
+{
+	"name": "aws-stack",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"deploy:stack": "cdk deploy --require-approval never --verbose"
+	},
+	"devDependencies": {
+		"aws-cdk": "^2.59.0",
+		"aws-cdk-lib": "^2.59.0"
+	}
+}
