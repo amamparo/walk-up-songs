@@ -32,7 +32,7 @@ jobs:
           aws-region: us-east-1
       - run: cd aws && npm run deploy:stack
       - run: npm run build
-      - run: aws s3 sync --delete build s3://${DOMAIN_NAME}
+      - run: aws s3 sync --delete build s3://${SUBDOMAIN}.${HOSTED_ZONE}
       - name: Clear cloudfront cache
         run: |
           export DISTRIBUTION_ID=$(
