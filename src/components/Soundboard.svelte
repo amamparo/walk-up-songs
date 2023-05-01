@@ -28,6 +28,9 @@
       } else {
         audio.src = `/audio/${nowPlaying.track}`
         audio.play()
+        audio.onended = () => {
+          nowPlaying = null
+        }
       }
     }
   }
