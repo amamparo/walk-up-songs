@@ -6,7 +6,9 @@ import {ARecord, CnameRecord, HostedZone, RecordTarget} from "aws-cdk-lib/aws-ro
 import {S3Origin} from "aws-cdk-lib/aws-cloudfront-origins";
 import {CloudFrontTarget} from "aws-cdk-lib/aws-route53-targets";
 
-const domainName = process.env.DOMAIN_NAME as string
+const hostedZoneName = process.env.HOSTED_ZONE as string
+const subdomain = process.env.SUBDOMAIN as string
+const domainName = `${subdomain}.${hostedZoneName}`
 
 class MyStack extends Stack {
     constructor(scope: App) {
@@ -25,7 +27,7 @@ class MyStack extends Stack {
         const originAccessIdentity = new OriginAccessIdentity(this, 'OAI');
         bucket.grantRead(originAccessIdentity);
 
-        const hostedZone = HostedZone.fromLookup(this, 'HostedZone', {domainName});
+        const hostedZone = HostedZone.fromLookup(this, 'HostedZone', {domainName: hostedZoneName});
 
         const certificate = new Certificate(this, 'Certificate', {
             domainName,
