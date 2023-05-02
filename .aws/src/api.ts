@@ -23,7 +23,10 @@ export default class API extends Resource {
 
     const api = new LambdaRestApi(
       this, "WalkupsApi", {
-        handler: lambdaFunction
+        handler: lambdaFunction,
+        defaultCorsPreflightOptions: {
+          allowOrigins: ["*"]
+        }
       }
     );
 
