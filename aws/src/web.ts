@@ -1,8 +1,8 @@
-import {App, CfnOutput, Stack} from 'aws-cdk-lib';
+import {CfnOutput, Stack} from 'aws-cdk-lib';
 import {BlockPublicAccess, Bucket} from 'aws-cdk-lib/aws-s3';
 import {Distribution, OriginAccessIdentity, ViewerProtocolPolicy} from "aws-cdk-lib/aws-cloudfront";
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
-import {ARecord, CnameRecord, HostedZone, RecordTarget} from "aws-cdk-lib/aws-route53";
+import {ARecord, HostedZone, RecordTarget} from "aws-cdk-lib/aws-route53";
 import {S3Origin} from "aws-cdk-lib/aws-cloudfront-origins";
 import {CloudFrontTarget} from "aws-cdk-lib/aws-route53-targets";
 
@@ -10,14 +10,9 @@ const hostedZoneName = process.env.HOSTED_ZONE as string
 const subdomain = process.env.SUBDOMAIN as string
 const domainName = `${subdomain}.${hostedZoneName}`
 
-class MyStack extends Stack {
-    constructor(scope: App) {
-        super(scope, process.env.STACK_NAME, {
-            env: {
-                region: process.env.CDK_DEFAULT_REGION,
-                account: process.env.CDK_DEFAULT_ACCOUNT
-            }
-        });
+export default class WebStack extends Stack {
+    constructor(scope: Stack) {
+        super(scope, 'Web');
 
         const bucket = new Bucket(this, 'Bucket', {
             bucketName: domainName,
@@ -57,5 +52,3 @@ class MyStack extends Stack {
         });
     }
 }
-
-new MyStack(new App());
