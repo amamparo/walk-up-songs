@@ -23,11 +23,14 @@ export default class API extends Resource {
       }
     );
 
-    const cname = new CnameRecord(this, "CnameRecord", {
-        zone: hostedZone,
-        domainName: "walkups-api.aaronmamparo.com",
-        ttl: Duration.seconds(30)
-      });
+    const domainName = "walkups-api.aaronmamparo.com"
+
+    new CnameRecord(this, "CnameRecord", {
+      zone: hostedZone,
+      domainName,
+      recordName: domainName,
+      ttl: Duration.seconds(30)
+    });
 
     new LambdaRestApi(
       this, "WalkupsApi", {
@@ -36,7 +39,7 @@ export default class API extends Resource {
           allowOrigins: ["*"]
         },
         domainName: {
-          domainName: cname.domainName,
+          domainName,
           certificate
         }
       }
