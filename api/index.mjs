@@ -1,4 +1,4 @@
-import foobar from "./lib/app";
+import foobar from "./src/app.mjs";
 
 const handler = (event) => {
   return foobar();
