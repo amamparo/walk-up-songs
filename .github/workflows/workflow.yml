@@ -31,8 +31,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - run: cd aws && npm run deploy:stack
-      - run: npm run build
-      - run: aws s3 sync --delete build s3://${SUBDOMAIN}.${HOSTED_ZONE}
+      - name: Build & deploy web
+        run: |
+          cd web
+          npm run build
+          aws s3 sync --delete build s3://${SUBDOMAIN}.${HOSTED_ZONE}
       - name: Clear cloudfront cache
         run: |
           export DISTRIBUTION_ID=$(
