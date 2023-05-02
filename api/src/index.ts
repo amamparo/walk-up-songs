@@ -1,7 +1,7 @@
-import foobar from "./src/app";
-
 const handler = (event) => {
-  return foobar();
+  console.log("foobar");
 };
 
 export { handler };
+
+handler(null);
