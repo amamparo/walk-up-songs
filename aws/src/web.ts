@@ -1,4 +1,4 @@
-import {CfnOutput, Environment, Resource, Stack} from 'aws-cdk-lib';
+import {CfnOutput, Resource, Stack} from 'aws-cdk-lib';
 import {BlockPublicAccess, Bucket} from 'aws-cdk-lib/aws-s3';
 import {Distribution, OriginAccessIdentity, ViewerProtocolPolicy} from "aws-cdk-lib/aws-cloudfront";
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
@@ -48,6 +48,7 @@ export default class Web extends Resource {
         });
 
         new CfnOutput(this, 'DistributionId', {
+            exportName: 'DistributionId',
             value: distribution.distributionId
         });
     }

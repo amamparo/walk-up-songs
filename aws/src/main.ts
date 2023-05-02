@@ -1,4 +1,4 @@
-import {App, Environment, Stack} from 'aws-cdk-lib';
+import {App, Stack} from 'aws-cdk-lib';
 import Web from "./web";
 
 
