@@ -3,9 +3,11 @@ import { DockerImageCode, DockerImageFunction } from "aws-cdk-lib/aws-lambda";
 import { Platform } from "aws-cdk-lib/aws-ecr-assets";
 import * as path from "path";
 import { LambdaRestApi } from "aws-cdk-lib/aws-apigateway";
+import { Certificate, CertificateValidation, ICertificate } from "aws-cdk-lib/aws-certificatemanager";
+import { HostedZone, IHostedZone } from "aws-cdk-lib/aws-route53";
 
 export default class API extends Resource {
-  constructor(scope: Stack) {
+  constructor(scope: Stack, hostedZone: IHostedZone, certificate: ICertificate) {
     super(scope, "API");
 
     const lambdaFunction = new DockerImageFunction(
@@ -26,6 +28,10 @@ export default class API extends Resource {
         handler: lambdaFunction,
         defaultCorsPreflightOptions: {
           allowOrigins: ["*"]
+        },
+        domainName: {
+          domainName: "api.walkups.aaronmamparo.com",
+          certificate
         }
       }
     );
