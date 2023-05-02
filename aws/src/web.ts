@@ -1,4 +1,4 @@
-import {CfnOutput, Stack} from 'aws-cdk-lib';
+import {CfnOutput, Environment, Stack} from 'aws-cdk-lib';
 import {BlockPublicAccess, Bucket} from 'aws-cdk-lib/aws-s3';
 import {Distribution, OriginAccessIdentity, ViewerProtocolPolicy} from "aws-cdk-lib/aws-cloudfront";
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
@@ -11,8 +11,8 @@ const subdomain = process.env.SUBDOMAIN as string
 const domainName = `${subdomain}.${hostedZoneName}`
 
 export default class WebStack extends Stack {
-    constructor(scope: Stack) {
-        super(scope, 'Web');
+    constructor(scope: Stack, env: Environment) {
+        super(scope, 'Web', {env});
 
         const bucket = new Bucket(this, 'Bucket', {
             bucketName: domainName,
