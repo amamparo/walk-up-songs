@@ -4,4 +4,4 @@ WORKDIR ${LAMBDA_TASK_ROOT}
 COPY . ${LAMBDA_TASK_ROOT}
 RUN npm i
 
-CMD ["index.handler"]
+CMD ["src.index.handler"]
