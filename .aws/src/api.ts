@@ -22,9 +22,14 @@ export default class API extends Resource {
     );
 
     const api = new LambdaRestApi(
-      this, "Api", {
+      this, "WalkupsApi", {
         handler: lambdaFunction
       }
     );
+
+    new CfnOutput(this, "ApiUrl", {
+      exportName: "ApiUrl",
+      value: api.url
+    });
   }
 }
