@@ -52,7 +52,7 @@ jobs:
           export DISTRIBUTION_ID=$(
             aws cloudformation describe-stacks \
               --stack-name ${STACK_NAME} \
-              --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" \
+              --query "Stacks[0].Outputs[?ExportName=='DistributionId'].OutputValue" \
               --output text
           )
           aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
