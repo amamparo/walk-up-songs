@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "npx nodemon --experimental-modules --es-module-specifier-resolution=node src/index.js",
     "clean": "rimraf dist",
-    "build": "esbuild src/index.js --bundle --minify --platform=node --target=es2020 --outfile=dist/index.js && touch dist/package.json",
-    "serve": "node dist/index.js"
+    "build": "esbuild src/index.js --bundle --minify --platform=node --target=es2020 --outfile=dist/index.mjs && touch dist/package.json"
   },
   "author": "",
   "license": "ISC",
