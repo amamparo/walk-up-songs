@@ -1,6 +1,18 @@
 {
   "compilerOptions": {
-    "module": "node16",
-    "moduleResolution": "node16"
-  }
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "declaration": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "lib": [
+      "es6",
+      "dom"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ]
 }
