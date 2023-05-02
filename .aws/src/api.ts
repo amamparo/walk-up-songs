@@ -4,8 +4,7 @@ import { Platform } from "aws-cdk-lib/aws-ecr-assets";
 import * as path from "path";
 import { LambdaRestApi } from "aws-cdk-lib/aws-apigateway";
 import { ICertificate } from "aws-cdk-lib/aws-certificatemanager";
-import { ARecord, IHostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53';
-import { ApiGateway } from 'aws-cdk-lib/aws-route53-targets';
+import { CnameRecord, IHostedZone } from 'aws-cdk-lib/aws-route53';
 
 export default class API extends Resource {
   constructor(scope: Stack, hostedZone: IHostedZone, certificate: ICertificate) {
@@ -24,25 +23,23 @@ export default class API extends Resource {
       }
     );
 
-    const domainName = "walkups-api.aaronmamparo.com"
+    const cname = new CnameRecord(this, "CnameRecord", {
+        zone: hostedZone,
+        domainName: "walkups-api.aaronmamparo.com",
+        ttl: Duration.seconds(30)
+      });
 
-    const api = new LambdaRestApi(
+    new LambdaRestApi(
       this, "WalkupsApi", {
         handler: lambdaFunction,
         defaultCorsPreflightOptions: {
           allowOrigins: ["*"]
         },
         domainName: {
-          domainName,
+          domainName: cname.domainName,
           certificate
         }
       }
     );
-
-    new ARecord(this, "AliasRecord", {
-      zone: hostedZone,
-      recordName: domainName,
-      target: RecordTarget.fromAlias(new ApiGateway(api))
-    });
   }
 }
