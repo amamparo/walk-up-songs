@@ -41,6 +41,7 @@ export default class API extends Resource {
 
     new ARecord(this, "ARecord", {
       zone: hostedZone,
+      recordName: domainName,
       target: RecordTarget.fromAlias(new ApiGatewayDomain(api.domainName as IDomainName)),
       ttl: Duration.seconds(30)
     });
