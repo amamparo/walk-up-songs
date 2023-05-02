@@ -1,8 +1,8 @@
 import { CfnOutput, Resource, Stack } from "aws-cdk-lib";
 import { BlockPublicAccess, Bucket } from "aws-cdk-lib/aws-s3";
 import { Distribution, OriginAccessIdentity, ViewerProtocolPolicy } from "aws-cdk-lib/aws-cloudfront";
-import { Certificate, CertificateValidation, ICertificate } from "aws-cdk-lib/aws-certificatemanager";
-import { ARecord, HostedZone, IHostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
+import { ICertificate } from "aws-cdk-lib/aws-certificatemanager";
+import { ARecord, IHostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { S3Origin } from "aws-cdk-lib/aws-cloudfront-origins";
 import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
 

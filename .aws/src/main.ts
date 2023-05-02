@@ -23,7 +23,7 @@ class MyStack extends Stack {
       subjectAlternativeNames: ["*.aaronmamparo.com"]
     });
 
-    new API(this, hostedZone, certificate);
+    new API(this, certificate);
     new Web(this, hostedZone, certificate);
   }
 }
