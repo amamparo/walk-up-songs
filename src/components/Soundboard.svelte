@@ -6,9 +6,9 @@
   let audio
 
   class WalkUpSong {
-    constructor(name, track) {
+    constructor(name, trackSlug) {
       this.name = name
-      this.track = track
+      this.track = `${trackSlug}.mp3`
     }
 
     getKey() {
@@ -16,7 +16,7 @@
     }
   }
 
-  const walkUpSongs = _.orderBy(songs.map(([name, track]) => new WalkUpSong(name, track)), [x => x.name.toLowerCase()])
+  const walkUpSongs = _.orderBy(songs.map(([name, slug]) => new WalkUpSong(name, slug)), [x => x.name.toLowerCase()])
 
   let nowPlaying = null
 
