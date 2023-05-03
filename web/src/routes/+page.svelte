@@ -1,14 +1,14 @@
 <script>
-  import Soundboard from "../components/Soundboard.svelte";
-  import Add from "../components/Add.svelte";
+  import Home from "../components/home/Home.svelte";
+  import Add from "../components/add/Add.svelte";
   import NotFound from "../components/NotFound.svelte";
-  import Router from "svelte-spa-router"
+  import Router from "svelte-spa-router";
 
   const routes = {
-    '/': Soundboard,
-    '/add': Add,
-    '*': NotFound,
-  }
+    "/": Home,
+    "/add": Add,
+    "*": NotFound
+  };
 </script>
 
-<Router {routes}/>
+<Router {routes} />

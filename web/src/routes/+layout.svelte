@@ -1,6 +1,6 @@
 <script>
   import "./tailwind.css";
 </script>
-<div class="w-screen h-screen p-8">
+<div class="p-7">
   <slot />
 </div>
