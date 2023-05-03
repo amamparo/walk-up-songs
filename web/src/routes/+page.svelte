@@ -1,7 +1,14 @@
 <script>
   import Soundboard from "../components/Soundboard.svelte";
-  import env from "../env";
+  import Add from "../components/Add.svelte";
+  import NotFound from "../components/NotFound.svelte";
+  import Router from "svelte-spa-router"
 
-  console.log(">>> " + env.apiBaseUrl);
+  const routes = {
+    '/': Soundboard,
+    '/add': Add,
+    '*': NotFound,
+  }
 </script>
-<Soundboard />
+
+<Router {routes}/>

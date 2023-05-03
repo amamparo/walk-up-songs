@@ -1,3 +1,3 @@
 <div>
-	foobar
+	404
 </div>

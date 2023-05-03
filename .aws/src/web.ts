@@ -1,4 +1,4 @@
-import { CfnOutput, Duration, Resource, Stack } from "aws-cdk-lib";
+import { CfnOutput, Resource, Stack } from "aws-cdk-lib";
 import { BlockPublicAccess, Bucket } from "aws-cdk-lib/aws-s3";
 import { Distribution, OriginAccessIdentity, ViewerProtocolPolicy } from "aws-cdk-lib/aws-cloudfront";
 import { ICertificate } from "aws-cdk-lib/aws-certificatemanager";
@@ -14,7 +14,7 @@ export default class Web extends Resource {
     const webDomain = `${env.webSubdomain}.${env.domain}`;
     const bucket = new Bucket(this, "Bucket", {
       bucketName: webDomain,
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
     });
 
     const originAccessIdentity = new OriginAccessIdentity(this, "OAI");
@@ -28,15 +28,7 @@ export default class Web extends Resource {
       },
       defaultRootObject: "index.html",
       domainNames: [webDomain],
-      certificate,
-      errorResponses: [
-        {
-          httpStatus: 404,
-          responseHttpStatus: 200,
-          responsePagePath: "/",
-          ttl: Duration.seconds(0)
-        }
-      ]
+      certificate
     });
 
     new ARecord(this, "AliasRecord", {
