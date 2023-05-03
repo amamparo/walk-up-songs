@@ -14,7 +14,8 @@ export default class Web extends Resource {
     const webDomain = `${env.webSubdomain}.${env.domain}`;
     const bucket = new Bucket(this, "Bucket", {
       bucketName: webDomain,
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      websiteErrorDocument: 'index.html'
     });
 
     const originAccessIdentity = new OriginAccessIdentity(this, "OAI");
