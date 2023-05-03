@@ -37,7 +37,7 @@
   }
 </script>
 
-<div class="col-span-12 grid grid-cols-12 gap-7">
+<div class="col-span-12 grid grid-cols-12 gap-6">
   {#each walkUpSongs as walkUpSong}
     <Song name={walkUpSong.name} play={() => nowPlaying = walkUpSong}
           stop={() => nowPlaying = null}

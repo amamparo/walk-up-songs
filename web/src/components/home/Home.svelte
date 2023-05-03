@@ -3,7 +3,7 @@
   import AddButton from "./AddButton.svelte";
 </script>
 
-<div class="text-2xl font-semibold grid grid-cols-12 gap-7">
+<div class="text-2xl font-semibold grid grid-cols-12 gap-6">
   <Songs />
   <AddButton/>
 </div>
