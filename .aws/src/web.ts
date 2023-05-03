@@ -1,5 +1,5 @@
 import { CfnOutput, Resource, Stack } from "aws-cdk-lib";
-import { BlockPublicAccess, Bucket } from "aws-cdk-lib/aws-s3";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 import { Distribution, OriginAccessIdentity, ViewerProtocolPolicy } from "aws-cdk-lib/aws-cloudfront";
 import { ICertificate } from "aws-cdk-lib/aws-certificatemanager";
 import { ARecord, IHostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
@@ -14,7 +14,6 @@ export default class Web extends Resource {
     const webDomain = `${env.webSubdomain}.${env.domain}`;
     const bucket = new Bucket(this, "Bucket", {
       bucketName: webDomain,
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html'
     });
