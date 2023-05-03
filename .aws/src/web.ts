@@ -15,6 +15,7 @@ export default class Web extends Resource {
     const bucket = new Bucket(this, "Bucket", {
       bucketName: webDomain,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html'
     });
 
