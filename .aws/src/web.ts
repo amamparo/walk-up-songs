@@ -38,7 +38,7 @@ export default class Web extends Resource {
     });
 
     new CfnOutput(this, "DistributionId", {
-      exportName: "DistributionId",
+      exportName: `${env.stackName}-distribution-id`,
       value: distribution.distributionId
     });
   }
