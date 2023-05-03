@@ -14,6 +14,7 @@ jobs:
     environment: production
 
     env:
+      STACK_NAME: walk-ups
       DOMAIN: aaronmamparo.com
       WEB_SUBDOMAIN: walk-ups
       API_SUBDOMAIN: walk-ups-api
