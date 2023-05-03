@@ -1,5 +1,5 @@
-import app from "./app";
+import app from './app'
 
-app.listen(8080, () => {
-  console.log("listening on port 8080");
-});
+const port = process.env.PORT
+
+app.listen(port, () => console.log(`listening on port ${port}`))

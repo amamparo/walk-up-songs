@@ -1,6 +1,6 @@
-import serverless from "serverless-http";
-import app from "./app";
+import serverless from 'serverless-http'
+import app from './app'
 
-const handler = serverless(app);
+const handler = serverless(app)
 
-export { handler };
+export { handler }

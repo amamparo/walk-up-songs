@@ -1,13 +1,23 @@
 {
-	"name": "walk-up songs",
-	"version": "0.0.1",
-	"private": true,
-	"type": "module",
-	"workspaces": [
-		"aws",
-		"web"
-	],
-	"scripts": {
-		"dev": "npm run dev -w web"
-	}
+  "name": "walk-up songs",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "aws",
+    "api",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently --kill-others \"PORT=8080 npm run dev -w api\" \"VITE_API_BASE_URL=http://localhost:3001 npm run dev -w web\""
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
+    "concurrently": "^8.0.1",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
+    "prettier": "^2.8.0"
+  }
 }

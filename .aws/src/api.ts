@@ -2,10 +2,11 @@ import { Duration, Resource, Stack } from "aws-cdk-lib";
 import { DockerImageCode, DockerImageFunction } from "aws-cdk-lib/aws-lambda";
 import { Platform } from "aws-cdk-lib/aws-ecr-assets";
 import * as path from "path";
-import { IDomainName, LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { IDomainName, LambdaRestApi } from "aws-cdk-lib/aws-apigateway";
 import { ICertificate } from "aws-cdk-lib/aws-certificatemanager";
-import { ARecord, CnameRecord, IHostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53';
-import { ApiGatewayDomain } from 'aws-cdk-lib/aws-route53-targets';
+import { ARecord, IHostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
+import { ApiGatewayDomain } from "aws-cdk-lib/aws-route53-targets";
+import env from "./env";
 
 export default class API extends Resource {
   constructor(scope: Stack, hostedZone: IHostedZone, certificate: ICertificate) {
@@ -24,16 +25,16 @@ export default class API extends Resource {
       }
     );
 
-    const domainName = "walkups-api.aaronmamparo.com"
+    const apiDomain = `${env.apiSubdomain}.${env.domain}`;
 
     const api = new LambdaRestApi(
-      this, "WalkupsApi", {
+      this, "Api", {
         handler: lambdaFunction,
         defaultCorsPreflightOptions: {
           allowOrigins: ["*"]
         },
         domainName: {
-          domainName,
+          domainName: apiDomain,
           certificate
         }
       }
@@ -41,7 +42,7 @@ export default class API extends Resource {
 
     new ARecord(this, "ARecord", {
       zone: hostedZone,
-      recordName: domainName,
+      recordName: apiDomain,
       target: RecordTarget.fromAlias(new ApiGatewayDomain(api.domainName as IDomainName)),
       ttl: Duration.seconds(30)
     });

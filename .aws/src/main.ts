@@ -3,24 +3,23 @@ import Web from "./web";
 import API from "./api";
 import { HostedZone } from "aws-cdk-lib/aws-route53";
 import { Certificate, CertificateValidation } from "aws-cdk-lib/aws-certificatemanager";
-
-const hostedZoneName = process.env.HOSTED_ZONE as string;
+import env from "./env";
 
 class MyStack extends Stack {
   constructor(scope: App) {
-    super(scope, process.env.STACK_NAME, {
+    super(scope, env.stackName, {
       env: {
-        region: process.env.CDK_DEFAULT_REGION,
-        account: process.env.CDK_DEFAULT_ACCOUNT
+        region: env.region,
+        account: env.account
       }
     });
 
-    const hostedZone = HostedZone.fromLookup(this, "HostedZone", { domainName: hostedZoneName });
+    const hostedZone = HostedZone.fromLookup(this, "HostedZone", { domainName: env.domain });
 
     const certificate = new Certificate(this, "Certificate", {
-      domainName: "aaronmamparo.com",
+      domainName: env.domain,
       validation: CertificateValidation.fromDns(hostedZone),
-      subjectAlternativeNames: ["*.aaronmamparo.com"]
+      subjectAlternativeNames: [`*.${env.domain}`]
     });
 
     new API(this, hostedZone, certificate);

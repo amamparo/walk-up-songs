@@ -5,15 +5,15 @@ import { ICertificate } from "aws-cdk-lib/aws-certificatemanager";
 import { ARecord, IHostedZone, RecordTarget } from "aws-cdk-lib/aws-route53";
 import { S3Origin } from "aws-cdk-lib/aws-cloudfront-origins";
 import { CloudFrontTarget } from "aws-cdk-lib/aws-route53-targets";
-
-const domainName = 'walkups.aaronmamparo.com';
+import env from "./env";
 
 export default class Web extends Resource {
   constructor(scope: Stack, hostedZone: IHostedZone, certificate: ICertificate) {
     super(scope, "Web");
 
+    const webDomain = `${env.webSubdomain}.${env.domain}`;
     const bucket = new Bucket(this, "Bucket", {
-      bucketName: domainName,
+      bucketName: webDomain,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL
     });
 
@@ -27,13 +27,13 @@ export default class Web extends Resource {
         viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS
       },
       defaultRootObject: "index.html",
-      domainNames: [domainName],
+      domainNames: [webDomain],
       certificate
     });
 
     new ARecord(this, "AliasRecord", {
       zone: hostedZone,
-      recordName: domainName,
+      recordName: webDomain,
       target: RecordTarget.fromAlias(new CloudFrontTarget(distribution))
     });
 

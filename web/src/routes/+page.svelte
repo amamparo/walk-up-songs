@@ -1,7 +1,7 @@
 <script>
-  import './tailwind.css'
-  import Soundboard from '../components/Soundboard.svelte';
+  import Soundboard from "../components/Soundboard.svelte";
+  import env from "../env";
+
+  console.log(">>> " + env.apiBaseUrl);
 </script>
-<div class="w-screen h-screen p-8">
-    <Soundboard/>
-</div>
+<Soundboard />

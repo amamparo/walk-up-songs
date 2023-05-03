@@ -14,9 +14,9 @@ jobs:
     environment: production
 
     env:
-      STACK_NAME: walkups
-      HOSTED_ZONE: aaronmamparo.com
-      SUBDOMAIN: walkups
+      DOMAIN: aaronmamparo.com
+      WEB_SUBDOMAIN: walk-ups
+      API_SUBDOMAIN: walk-ups-api
 
     steps:
       - name: Checkout
@@ -44,8 +44,9 @@ jobs:
       - name: Build & deploy web
         run: |
           cd web
-          npm run build
-          aws s3 sync --delete build s3://${SUBDOMAIN}.${HOSTED_ZONE}
+          echo "VITE_API_BASE_URL=${API_SUBDOMAIN}.${DOMAIN}" >> production.env
+          npx vite build -m production
+          aws s3 sync --delete build "s3://${WEB_SUBDOMAIN}.${DOMAIN}"
 
       - name: Clear cloudfront cache
         run: |
