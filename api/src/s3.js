@@ -28,8 +28,9 @@ export default class S3 {
 			Bucket: this.bucket,
 			Prefix: prefix
 		}))
-		return Promise.all(
-			response.Contents.map(async ({ Key }) => ({
+		const contents = response.Contents
+		return !contents ? [] : Promise.all(
+			contents.map(async ({ Key }) => ({
 				key: Key,
 				url: await this.#getPreSignedGetUrl(Key)
 			}))
