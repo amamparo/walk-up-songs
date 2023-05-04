@@ -1,12 +1,12 @@
 <script>
   import Home from "../components/home/Home.svelte";
-  import Add from "../components/add/Add.svelte";
+  import Manage from "../components/manage/Manage.svelte";
   import NotFound from "../components/NotFound.svelte";
   import Router from "svelte-spa-router";
 
   const routes = {
     "/": Home,
-    "/add": Add,
+    "/manage": Manage,
     "*": NotFound
   };
 </script>
