@@ -48,7 +48,7 @@ jobs:
           export MODE=production
           echo "VITE_API_BASE_URL=https://${API_SUBDOMAIN}.${DOMAIN}" >> .env.${MODE}
           npx vite build -m ${MODE}
-          aws s3 sync --delete build "s3://${WEB_SUBDOMAIN}.${DOMAIN}"
+          aws s3 sync build "s3://${WEB_SUBDOMAIN}.${DOMAIN}"
 
       - name: Clear cloudfront cache
         run: |

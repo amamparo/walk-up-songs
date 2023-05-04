@@ -16,10 +16,9 @@ app.get('/upload/:key', async (req, res) => {
 })
 
 app.get('/songs', async (req, res) => {
-	const objects = await s3.getObjects('songs')
-	res.json(objects.map(({key, url}) => ({
+	res.json(s3.getKeys('songs').map(key => ({
 		name: key.split('/').pop().split('.')[0],
-		url
+		url: `/${key}`
 	})))
 })
 

@@ -1,7 +1,6 @@
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import {
 	DeleteObjectCommand,
-	GetObjectCommand,
 	ListObjectsV2Command,
 	PutObjectCommand,
 	S3Client
@@ -23,18 +22,13 @@ export default class S3 {
 		return getSignedUrl(this.client, command, { expiresIn: 10 })
 	}
 
-	async getObjects(prefix) {
+	async getKeys(prefix) {
 		const response = await this.client.send(new ListObjectsV2Command({
 			Bucket: this.bucket,
 			Prefix: prefix
 		}))
 		const contents = response.Contents
-		return !contents ? [] : Promise.all(
-			contents.map(async ({ Key }) => ({
-				key: Key,
-				url: await this.#getPreSignedGetUrl(Key)
-			}))
-		)
+		return !contents ? [] : contents.map(({ Key }) => Key)
 	}
 
 	async deleteObject(key) {
@@ -43,13 +37,5 @@ export default class S3 {
 			Bucket: this.bucket,
 			Key: key
 		}))
-	}
-
-	async #getPreSignedGetUrl(key) {
-		const command = new GetObjectCommand({
-			Bucket: this.bucket,
-			Key: key
-		})
-		return getSignedUrl(this.client, command, { expiresIn: 86400 * 7 })
 	}
 }
