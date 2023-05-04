@@ -8,6 +8,7 @@ import { ARecord, IHostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53'
 import { ApiGatewayDomain } from 'aws-cdk-lib/aws-route53-targets'
 import env from './env'
 import { Bucket, HttpMethods } from 'aws-cdk-lib/aws-s3'
+import { ManagedPolicy, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam'
 
 export default class API extends Resource {
 	constructor(scope: Stack, hostedZone: IHostedZone, certificate: ICertificate) {
@@ -43,7 +44,29 @@ export default class API extends Resource {
 				memorySize: 256,
 				environment: {
 					BUCKET: bucket.bucketName
-				}
+				},
+				role: new Role(this, 'Role', {
+					assumedBy: new ServicePrincipal('lambda.amazonaws.com'),
+					managedPolicies: [
+						ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaVPCAccessExecutionRole'),
+						ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+					],
+					inlinePolicies: {
+						's3': new PolicyDocument({
+							statements: [
+								new PolicyStatement({
+									actions: [
+										's3:*'
+									],
+									resources: [
+										bucket.bucketArn,
+										`${bucket.bucketArn}*`
+									]
+								})
+							]
+						})
+					}
+				})
 			}
 		)
 
