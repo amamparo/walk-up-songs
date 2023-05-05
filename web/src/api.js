@@ -11,3 +11,13 @@ export const del = async path => {
 		method: 'DELETE'
 	})
 }
+
+export const post = async (path, payload) => {
+	await fetch(url(path), {
+		method: 'POST',
+		body: JSON.stringify(payload),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+}

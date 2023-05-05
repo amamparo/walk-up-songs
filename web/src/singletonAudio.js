@@ -34,3 +34,7 @@ export default class SingletonAudio {
 		}
 	}
 }
+
+export const SINGLETON_AUDIO_KEY = 'singletonAudio'
+
+

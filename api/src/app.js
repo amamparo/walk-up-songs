@@ -1,31 +1,36 @@
 import express from 'express'
 import 'express-async-errors'
 import cors from 'cors'
-import S3 from './s3'
+import manage from './manage'
+import { getAllClips } from './clipService'
+import { getAllAssignments } from './assignmentService'
 
 const app = express()
 app.use(express.json())
 app.use(cors())
 
-const s3 = new S3()
+app.use('/manage', manage)
 
-app.get('/upload/:key', async (req, res) => {
+app.get('/clips', async (req, res) => {
+	const clips = await getAllClips()
+	const clipUrlLookup = clips.reduce(
+		(accum, current) => {
+			accum[current.name] = current.url
+			return accum
+		},
+		{}
+	)
+	const assignments = await getAllAssignments()
+	const usedClips = assignments.map(x => x.clipName)
 	res.json({
-		url: await s3.getPreSignedUploadUrl(`songs/${req.params.key}`)
+		assignments: assignments.map(({ name, clipName }) => ({
+			name,
+			url: clipUrlLookup[clipName]
+		})),
+		extras: clips
+			.filter(x => !usedClips.includes(x.name))
+			.map(({ name, url }) => ({ name, url }))
 	})
-})
-
-app.get('/songs', async (req, res) => {
-	const keys = await s3.getKeys('songs')
-	res.json(keys.map(key => ({
-		name: key.split('/').pop().split('.')[0],
-		url: `/${key}`
-	})))
-})
-
-app.delete('/song/:name', async (req, res) => {
-	await s3.deleteObject(`songs/${req.params.name}.mp3`)
-	res.status(204).send()
 })
 
 const errorHandler = (err, req, res, next) => {

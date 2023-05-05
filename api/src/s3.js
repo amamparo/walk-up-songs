@@ -1,6 +1,6 @@
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import {
-	DeleteObjectCommand,
+	DeleteObjectCommand, GetObjectCommand,
 	ListObjectsV2Command,
 	PutObjectCommand,
 	S3Client
@@ -8,7 +8,7 @@ import {
 import env from './env'
 
 
-export default class S3 {
+class S3 {
 	constructor() {
 		this.client = new S3Client({})
 		this.bucket = env.bucket
@@ -32,10 +32,40 @@ export default class S3 {
 	}
 
 	async deleteObject(key) {
-		console.log(key)
 		await this.client.send(new DeleteObjectCommand({
 			Bucket: this.bucket,
 			Key: key
 		}))
 	}
+
+	async put(key, data) {
+		await this.client.send(new PutObjectCommand({
+			Bucket: this.bucket,
+			Key: key,
+			Body: JSON.stringify(data)
+		}))
+	}
+
+	async getJson(key) {
+		try {
+			const response = await this.client.send(new GetObjectCommand({
+				Bucket: this.bucket,
+				Key: key
+			}))
+			return JSON.parse(await this.#streamToString(response.Body))
+		} catch (e) {
+			return Promise.resolve()
+		}
+	}
+
+	#streamToString(stream) {
+		return new Promise((resolve, reject) => {
+			const chunks = []
+			stream.on('data', (chunk) => chunks.push(chunk))
+			stream.on('error', reject)
+			stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
+		})
+	}
 }
+
+export default new S3()

@@ -1,9 +1,13 @@
 <script>
+	import { getContext } from 'svelte'
+	import { SINGLETON_AUDIO_KEY } from '../../singletonAudio'
+
 	export let name
 	export let url
-	export let singletonAudio
 
 	let isPlaying = false
+
+	const singletonAudio = getContext(SINGLETON_AUDIO_KEY).get()
 
 	singletonAudio.urlStore.subscribe(newUrl => {
 		isPlaying = newUrl === url

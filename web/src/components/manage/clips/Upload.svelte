@@ -3,12 +3,13 @@
 </script>
 
 <script>
-	import { get } from '../../api'
-	import { createEventDispatcher } from 'svelte'
-
-	const dispatch = createEventDispatcher()
+	import { get } from '../../../api'
+	import { getContext } from 'svelte'
+	import { DATA_KEY } from '../context'
 
 	let isUploading = false
+
+	const { refresh } = getContext(DATA_KEY)
 
 	function validate(file) {
 		if (!file.type.startsWith('audio')) {
@@ -27,7 +28,7 @@
 			return
 		}
 		const extension = file.name.split('.').pop()
-		const { url } = await get(`/upload/${name}.${extension}`)
+		const { url } = await get(`/manage/upload/${name}.${extension}`)
 		await fetch(url, {
 			method: 'PUT',
 			headers: {
@@ -45,7 +46,7 @@
 		} finally {
 			target.reset()
 			isUploading = false
-			dispatch('upload')
+			refresh()
 		}
 	}
 </script>
